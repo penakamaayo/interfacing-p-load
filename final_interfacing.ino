@@ -15,6 +15,10 @@ void setup() {
   delay(500);
 }
 
+
+//----------------------
+//   Main loop
+//----------------------
 void loop() {
     char choice=' ';
     
@@ -26,23 +30,15 @@ void loop() {
     if(choice==ENTERKEY){
       clear_screen();
             
-      //-----------------------------------
       phone_number = get_number();
       delay(1000);
-      //-----------------------------------
-      
-      //-----------------------------------
+           
       get_amount();
       delay(1000);
-      //-----------------------------------      
-      
-      //----------------------------------
-       waiting_time();
-      //---------------------------------
+           
+      waiting_time();
 
-      if(!verify_info()){
-     
-      }
+      if(!verify_info()){ }
       
       clear_screen();
       mySerial.print(iamount);
@@ -51,10 +47,9 @@ void loop() {
 }
 
 
-
-//----------------------------------------
-//         USER-DEFINED FUNCTIONS
-//----------------------------------------
+//---------------------------------
+//    USER-DEFINED FUNCTIONS
+//---------------------------------
 
 void clear_screen(){
   mySerial.print("\033E");
@@ -90,7 +85,7 @@ String get_number(){
       else{
         mySerial.print("\b");
       }
-      
+        
       phone_number[i] = '\0';
       continue;
     }
@@ -183,22 +178,17 @@ boolean verify_info(){
    mySerial.print("Press A to Continue ");
    mySerial.print("Press D to Cancel "); 
 
-   // // clear keys
-   // while(mySerial.available() >0) {
-   //   mySerial.read();
-   // }
-
   clear_buffer() ;
 
-   while(mySerial.available() <=0) { }
-   choice = mySerial.read();
+  while(mySerial.available() <=0) { }
+  
+  choice = mySerial.read(); 
+  mySerial.print(digit);
    
-   mySerial.print(digit);
-   
-   if(choice==ENTERKEY){
-      return true;
-   }
-   return false;
+  if(choice==ENTERKEY){
+     return true;
+  }
+  return false;
 }
 
 void clear_buffer(){
