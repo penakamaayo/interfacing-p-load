@@ -1,3 +1,5 @@
+//Penya, James
+
 #include <SoftwareSerial.h>
 #define ENTERKEY 'A'
 
@@ -66,134 +68,127 @@ void welcome_msg(){
 
 
 String get_number(){
-  phone_number="";
-  clear_buffer();
-  clear_screen();   
-  mySerial.print("Enter Phone number: ");
-  int i=0;
-   
-  while(i<11){
-    while(mySerial.available()<=0){}
-    num = mySerial.read();
-    delay(200);
-     
-    if(num=='D'){
-      --i;
-      if (i<0) {
-        i=0;
-      }
-      else{
-        mySerial.print("\b");
-      }
-        
-      phone_number[i] = '\0';
-      continue;
-    }
-    
-    if(!isDigit(num)){
-      continue;
-    }
-    
-    phone_number += num;
-    mySerial.print(num);
-    i++;
-  }
-  
-  return phone_number;
+	phone_number="";
+	clear_buffer();
+	clear_screen();   
+	mySerial.print("Enter Phone number: ");
+	int i=0;
+
+	while(i<11){
+		while(mySerial.available()<=0){}
+		
+		num = mySerial.read();
+		delay(200);
+
+		if(num=='D'){
+			--i;
+			if (i<0) {
+				i=0;
+			}
+			else{
+				mySerial.print("\b");
+			}
+			phone_number[i] = '\0';
+			continue;
+		}
+
+		if(!isDigit(num)){
+			continue;
+		}
+
+		phone_number += num;
+		mySerial.print(num);
+		i++;
+	}
+	return phone_number;
 }
 
 void get_amount(){
-  clear_buffer();
-  clear_screen();
-  mySerial.println("Press 'A' when done");
-  mySerial.println("-------------------");
-  mySerial.print("Enter amount: ");
- 
-  //init amount;
-  for(int j=0; j<3;j++){
-    amount[j]='\0';
-  }
+	clear_buffer();
+	clear_screen();
+	mySerial.print("Press 'A' when done ");
+	mySerial.print("--------------------");
+	mySerial.print("Enter amount: ");
 
-  iamount=0;
-  int i=0;
-  
-  while(i<3){
-    
-    while(mySerial.available() <=0) { }
-    digit = mySerial.read();
-    delay(200);
+	for(int j=0; j<3;j++){
+		amount[j]='\0';
+	}
 
-    if(digit=='D'){
-      --i;
-      if (i<0) {
-        i=0;
-      }
-      else{
-        mySerial.print("\b");
-      }
-      
-      amount[i] = '\0';
-      continue;
-    }
-    
-    if(digit==ENTERKEY){
-      // return amount;
-      break;
-    }
-    
-    if(!isDigit(digit)){
-      continue;
-    }
-  
-    if(i<2){
-      amount[i] = digit;
-      mySerial.print(digit);
-      i++;
-    }
-  }  
-    
-  amount[i]='\0';
-  iamount = atoi(amount);
+	iamount=0;
+	int i=0;
+
+	while(i<3){
+		while(mySerial.available() <=0) { }
+		digit = mySerial.read();
+		delay(200);
+
+		if(digit=='D'){
+			--i;
+			if (i<0) {
+				i=0;
+			}
+			else{
+				mySerial.print("\b");
+			}
+			amount[i] = '\0';
+			continue;
+		}
+
+		if(digit==ENTERKEY){
+			break;
+		}
+
+		if(!isDigit(digit)){
+			continue;
+		}
+
+		if(i<2){
+			amount[i] = digit;
+			mySerial.print(digit);
+			i++;
+		}
+	}  
+	amount[i]='\0';
+	iamount = atoi(amount);
 }
 
 void waiting_time(){
-  clear_screen();
-  mySerial.println("");
-  mySerial.print("Processing..        ");
-  mySerial.print("Please wait...");
-  delay(1000);
-  
-  clear_screen();
+	clear_screen();
+	mySerial.println("");
+	mySerial.print("Processing..        ");
+	mySerial.print("Please wait...");
+	delay(1000);
+
+	clear_screen();
 }
 
 
 
 boolean verify_info(){
-  char choice;
-  clear_screen();
-   mySerial.print("Number: ");
-   mySerial.println(phone_number);
-   mySerial.print("Amount: Php ");
-   mySerial.println(amount);
-   mySerial.print("Press A to Continue ");
-   mySerial.print("Press D to Cancel "); 
+	char choice;
+	clear_screen();
+	mySerial.print("Number: ");
+	mySerial.println(phone_number);
+	mySerial.print("Amount: Php ");
+	mySerial.println(amount);
+	mySerial.print("Press A to Continue ");
+	mySerial.print("Press D to Cancel "); 
 
-  clear_buffer() ;
+	clear_buffer() ;
+	while(mySerial.available() <=0) { }
 
-  while(mySerial.available() <=0) { }
-  
-  choice = mySerial.read(); 
-  mySerial.print(digit);
-   
-  if(choice==ENTERKEY){
-     return true;
-  }
-  return false;
+	choice = mySerial.read(); 
+	mySerial.print(digit);
+
+	if(choice==ENTERKEY){
+		return true;
+	}
+	return false;
 }
 
+//clear keys
 void clear_buffer(){
-   //clear keys
-  while(mySerial.available() >0) {
-    mySerial.read();
-  }
+	while(mySerial.available() >0) {
+		mySerial.read();
+	}
 }
